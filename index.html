@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>赫尔林之地 | 碎片</title>
     <style>
-        
+     @font-face {
+            font-family: 'Boredom';
+            src: url('Boredom.otf') format('opentype');
+}        
         /* --- 基础设定 --- */
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif,'Boredom';
-            src: url('Boredom.otf') format('opentype');
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             color: #eee;
             margin: 0;
             padding: 0;
@@ -24,7 +26,7 @@
         }
 
         .overlay {
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0, 0, 0, 0.4);
             min-height: 100vh;
             padding: 60px 0; /* 上下留空，左右由内部控制 */
         }
@@ -37,7 +39,7 @@
             letter-spacing: 10px;
             margin-bottom: 60px;
             text-shadow: 0 0 20px rgba(255,255,255,0.3);
-            font-size: 2em;
+            font-size: 4em;
             position: relative;
             z-index: 10;
         }
@@ -279,7 +281,7 @@
 
             <div class="time-zone">
                 
-                <details class="capsule" open>
+                <details class="capsule">
                     <summary>2026</summary> <div class="sub-container"> <details class="sub-block">
                             <summary>01月 . Jan</summary>
                             <div class="photo-grid">
@@ -337,7 +339,7 @@
                     </div>
                 </details>
 
-                <details class="capsule">
+                <details class="capsule" open>
                     <summary>Pets <span class="planet-icon">🪩</span></summary>
                     <div class="sub-container">
                         <details class="sub-block"><summary>DuoPIE</summary><div class="photo-grid"></div></details>
@@ -347,7 +349,7 @@
                     </div>
                 </details>
 
-                <details class="capsule">
+                <details class="capsule" open>
                     <summary>Artwork <span class="planet-icon">🪩</span></summary>
                     <div class="sub-container">
                         <details class="sub-block"><summary>Installation</summary><div class="photo-grid"></div></details>
