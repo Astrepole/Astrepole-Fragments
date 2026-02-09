@@ -13,90 +13,173 @@
             padding: 0;
             line-height: 1.6;
             min-height: 100vh;
-            /* 背景图设置 */
+            /* 背景图 */
             background-image: url('bg.png'); 
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+            overflow-x: hidden; /* 防止横向滚动条 */
         }
 
-        /* 黑色遮罩 */
         .overlay {
             background-color: rgba(0, 0, 0, 0.6);
             min-height: 100vh;
-            padding: 60px 20px;
+            padding: 60px 0; /* 上下留空，左右由内部控制 */
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        h1 {
+        /* 页面主标题 */
+        h1.main-title {
             text-align: center;
             font-weight: 200;
-            letter-spacing: 8px;
-            margin-bottom: 80px;
+            letter-spacing: 10px;
+            margin-bottom: 60px;
             text-shadow: 0 0 20px rgba(255,255,255,0.3);
             font-size: 2em;
+            position: relative;
+            z-index: 10;
         }
 
-        /* --- 时间胶囊 (年份) --- */
-        details.year-capsule {
-            margin-bottom: 20px;
+        /* --- 核心布局：左右分栏 --- */
+        .main-stage {
+            display: flex;
+            width: 100%;
+            position: relative;
+            min-height: 60vh;
+        }
+
+        /* 中央分割线 */
+        .divider-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            /* 虚线样式 */
+            border-left: 1px dashed rgba(255, 255, 255, 0.2); 
+            transform: translateX(-50%);
+            z-index: 1; /* 放在底层 */
+        }
+
+        /* 左侧：时间维度 */
+        .time-zone {
+            flex: 1; /* 占据一半 */
+            padding-left: 40px; /* 左侧留空 40px */
+            padding-right: 20px;
+            border-right: 1px solid transparent; /* 占位符 */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* 胶囊靠左对齐 */
+        }
+
+        /* 右侧：空间维度 */
+        .space-zone {
+            flex: 1; /* 占据一半 */
+            padding-right: 40px; /* 右侧留空 40px */
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* 胶囊靠右对齐 (镜像) */
+            text-align: right; /* 文字也靠右 */
+        }
+
+        /* --- 胶囊样式 (共用) --- */
+        details.capsule {
+            margin-bottom: 30px;
             border: none;
+            width: fit-content;
+            max-width: 90%;
+            z-index: 2; /* 确保在分割线之上 */
         }
 
-        details.year-capsule > summary {
+        /* 胶囊按钮 */
+        details.capsule > summary {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 12px 30px;
-            border-radius: 50px; /* 胶囊形状 */
+            border-radius: 50px; /* 椭圆形状 */
             cursor: pointer;
             font-size: 1.1em;
             letter-spacing: 2px;
             list-style: none; /* 隐藏默认三角 */
-            text-align: center;
             transition: all 0.3s ease;
             position: relative;
             backdrop-filter: blur(5px);
-            width: fit-content;
-            margin: 0 auto; /* 居中 */
-            display: block;
+            white-space: nowrap;
         }
 
-        details.year-capsule > summary:hover {
+        /* 左边胶囊悬停 */
+        .time-zone details.capsule > summary:hover {
             background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 15px rgba(255,255,255,0.1);
-            transform: scale(1.02);
+            box-shadow: -5px 0 15px rgba(255,255,255,0.1); /* 阴影向左 */
+            transform: translateX(5px);
         }
 
-        details.year-capsule[open] > summary {
+        /* 右边胶囊悬停 */
+        .space-zone details.capsule > summary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 5px 0 15px rgba(255,255,255,0.1); /* 阴影向右 */
+            transform: translateX(-5px);
+        }
+
+        /* 隐藏默认的小三角 (兼容性写法) */
+        details.capsule > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        /* 展开时的背景加深 */
+        details.capsule[open] > summary {
             background: rgba(255, 255, 255, 0.2);
             font-weight: bold;
         }
 
-        /* 隐藏默认的小三角 (兼容性写法) */
-        details.year-capsule > summary::-webkit-details-marker {
-            display: none;
+        /* --- 右侧特殊的“星球”胶囊样式 --- */
+        .space-zone details.capsule > summary {
+            /* 右侧胶囊圆角稍稍不同，更有“星球”感 */
+            border-radius: 30px 50px 50px 30px; 
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .planet-icon {
+            font-size: 1.2em;
+            margin-left: 10px; /* 图标在文字右边 */
+            vertical-align: middle;
         }
 
-        /* 年份展开后的内容容器 */
-        .months-container {
+        /* --- 展开后的内容容器 (子层级) --- */
+        .sub-container {
             margin-top: 20px;
-            padding-left: 0;
+            padding-left: 20px; /* 左侧缩进 */
             animation: fadeIn 0.5s ease;
         }
 
-        /* --- 月份折叠 --- */
-        details.month-block {
-            margin-bottom: 10px;
-            border-left: 1px solid rgba(255,255,255,0.1);
-            margin-left: 20px; /* 缩进一点 */
+        /* 右侧子层级的布局稍微不同 (靠右) */
+        .space-zone .sub-container {
+            padding-left: 0;
+            padding-right: 20px; /* 右侧缩进 */
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* 子元素靠右 */
         }
 
-        details.month-block > summary {
-            padding: 10px 15px;
+        /* --- 第二层级 (月/地点) --- */
+        details.sub-block {
+            margin-bottom: 15px;
+            border-left: 1px solid rgba(255,255,255,0.1); /* 左侧线 */
+            padding-left: 10px;
+            width: 100%;
+        }
+
+        /* 右侧第二层级 (镜像线) */
+        .space-zone details.sub-block {
+            border-left: none;
+            border-right: 1px solid rgba(255,255,255,0.1); /* 右侧线 */
+            padding-left: 0;
+            padding-right: 10px;
+        }
+
+        details.sub-block > summary {
+            padding: 8px 0;
             cursor: pointer;
             list-style: none;
             font-size: 0.9em;
@@ -104,26 +187,26 @@
             transition: color 0.3s;
         }
 
-        details.month-block > summary:hover {
-            color: #fff;
-        }
-        
-        details.month-block[open] > summary {
-            color: #fff;
-            text-shadow: 0 0 5px rgba(255,255,255,0.5);
-        }
+        details.sub-block > summary:hover { color: #fff; }
+        details.sub-block[open] > summary { color: #fff; text-shadow: 0 0 5px rgba(255,255,255,0.5); }
 
         /* --- 照片网格 --- */
         .photo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             gap: 8px;
-            padding: 15px 15px 30px 15px;
+            padding: 10px 0;
+            margin-top: 5px;
+        }
+
+        /* 右侧网格特殊处理：为了美观，尽量靠右显示 */
+        .space-zone .photo-grid {
+            direction: rtl; /* 从右往左排 */
         }
 
         .photo-grid img {
             width: 100%;
-            height: 120px;
+            height: 100px;
             object-fit: cover;
             border-radius: 4px;
             cursor: zoom-in;
@@ -131,131 +214,138 @@
             transition: opacity 0.3s;
         }
 
-        .photo-grid img:hover {
-            opacity: 1;
-        }
+        .photo-grid img:hover { opacity: 1; }
 
         /* --- 磨砂灯箱 (Lightbox) --- */
         #lightbox {
-            display: none; /* 默认隐藏 */
+            display: none;
             position: fixed;
             z-index: 1000;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7); /* 深色背景 */
-            backdrop-filter: blur(15px); /* 磨砂效果关键 */
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            justify-content: center; align-items: center;
         }
-
-        #lightbox img {
-            max-width: 90%;
-            max-height: 80vh;
-            border-radius: 4px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-        }
-
-        /* 灯箱控制按钮样式 */
-        .lb-btn {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 20px;
-            transition: all 0.3s;
-            backdrop-filter: blur(5px);
-        }
-
-        .lb-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* 按钮位置 */
+        #lightbox img { max-width: 90%; max-height: 80vh; border-radius: 4px; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        .lb-btn { position: absolute; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px; transition: all 0.3s; backdrop-filter: blur(5px); }
+        .lb-btn:hover { background: rgba(255, 255, 255, 0.3); }
         #lb-close { top: 30px; left: 30px; }
         #lb-prev { top: 50%; left: 30px; transform: translateY(-50%); }
         #lb-next { top: 50%; right: 30px; transform: translateY(-50%); }
 
         /* 动画 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        footer {
-            text-align: center;
-            margin-top: 100px;
-            font-size: 0.7em;
-            color: #555;
-            letter-spacing: 2px;
+        footer { text-align: center; margin-top: 100px; font-size: 0.7em; color: #555; letter-spacing: 2px; padding-bottom: 20px;}
+
+        /* --- 手机端适配 --- */
+        /* 当屏幕很窄时，取消左右分栏，变成上下排列 */
+        @media (max-width: 768px) {
+            .main-stage { flex-direction: column; }
+            .divider-line { display: none; } /* 手机上隐藏分割线 */
+            .time-zone, .space-zone { padding: 0 20px; align-items: center; text-align: center; } /* 居中对齐 */
+            .space-zone { margin-top: 50px; }
+            .space-zone details.sub-block { border-right: none; border-left: 1px solid rgba(255,255,255,0.1); padding-right: 0; padding-left: 10px; text-align: left; align-items: flex-start;} /* 恢复左对齐习惯 */
+            .space-zone .sub-container { align-items: flex-start; text-align: left; }
+            .space-zone .photo-grid { direction: ltr; }
+            details.capsule { max-width: 100%; width: 100%; } /* 胶囊占满宽 */
+            details.capsule > summary { width: fit-content; margin: 0 auto; display: block;} /* 按钮居中 */
         }
     </style>
 </head>
 <body>
 
     <div class="overlay">
-        <div class="container">
-            <h1>FRAGMENT</h1>
+        
+        <h1 class="main-title">FRAGMENT</h1>
 
-            <details class="year-capsule" open> <summary>2026</summary>
-                <div class="months-container">
-                    <details class="month-block">
-                        <summary>01月 . Jan</summary>
-                        <div class="photo-grid">
-                            <img src="2024-01-01.jpg" alt="photo">
-                            <img src="2024-01-02.jpg" alt="photo">
-                        </div>
-                    </details>
-                </div>
-            </details>
+        <div class="main-stage">
+            
+            <div class="divider-line"></div>
 
-            <details class="year-capsule">
-                <summary>2025</summary>
-                <div class="months-container">
-                     <p style="text-align:center; color:#666; font-size:0.8em; padding:20px;">Waiting to be filled...</p>
-                </div>
-            </details>
-
-            <details class="year-capsule">
-                <summary>2024</summary>
-                <div class="months-container">
-                    <details class="month-block">
-                        <summary>12月 . Dec</summary>
-                        <div class="photo-grid">
+            <div class="time-zone">
+                
+                <details class="capsule" open>
+                    <summary>2026</summary> <div class="sub-container"> <details class="sub-block">
+                            <summary>01月 . Jan</summary>
+                            <div class="photo-grid">
+                                <img src="2024-01-01.jpg" alt="photo">
+                                <img src="2024-01-02.jpg" alt="photo">
                             </div>
-                    </details>
-                </div>
-            </details>
+                        </details>
+                    </div>
+                </details>
 
-            <details class="year-capsule"><summary>2023</summary><div class="months-container"></div></details>
-            <details class="year-capsule"><summary>2022</summary><div class="months-container"></div></details>
-            <details class="year-capsule"><summary>2021</summary><div class="months-container"></div></details>
-            <details class="year-capsule"><summary>2020</summary><div class="months-container"></div></details>
-            <details class="year-capsule"><summary>2019</summary><div class="months-container"></div></details>
-            <details class="year-capsule"><summary>2018</summary><div class="months-container"></div></details>
-            <details class="year-capsule"><summary>2017</summary><div class="months-container"></div></details>
-            <details class="year-capsule"><summary>2016</summary><div class="months-container"></div></details>
-            <details class="year-capsule"><summary>2015</summary><div class="months-container"></div></details>
-            <details class="year-capsule"><summary>2014</summary><div class="months-container"></div></details>
-            <details class="year-capsule"><summary>2013</summary><div class="months-container"></div></details>
-            <details class="year-capsule"><summary>2012</summary><div class="months-container"></div></details>
-            <details class="year-capsule"><summary>2011</summary><div class="months-container"></div></details>
-            <details class="year-capsule"><summary>2010</summary><div class="months-container"></div></details>
+                <details class="capsule">
+                    <summary>2025</summary>
+                    <div class="sub-container"><p style="color:#666; font-size:0.8em">...</p></div>
+                </details>
 
-            <footer>
-                <p>人类的情绪需要更大的宇宙稀释</p>
-            </footer>
-        </div>
+                <details class="capsule">
+                    <summary>2024</summary>
+                    <div class="sub-container"></div>
+                </details>
+                
+                <details class="capsule"><summary>2023</summary><div class="sub-container"></div></details>
+                <details class="capsule"><summary>2022</summary><div class="sub-container"></div></details>
+                <details class="capsule"><summary>2021</summary><div class="sub-container"></div></details>
+                <details class="capsule"><summary>2020</summary><div class="sub-container"></div></details>
+                <details class="capsule"><summary>2019</summary><div class="sub-container"></div></details>
+                <details class="capsule"><summary>2018</summary><div class="sub-container"></div></details>
+                <details class="capsule"><summary>2017</summary><div class="sub-container"></div></details>
+                <details class="capsule"><summary>2016</summary><div class="sub-container"></div></details>
+                <details class="capsule"><summary>2015</summary><div class="sub-container"></div></details>
+                <details class="capsule"><summary>2014</summary><div class="sub-container"></div></details>
+                <details class="capsule"><summary>2013</summary><div class="sub-container"></div></details>
+                <details class="capsule"><summary>2012</summary><div class="sub-container"></div></details>
+
+            </div> <div class="space-zone">
+                
+                <details class="capsule" open> <summary>Travel <span class="planet-icon">🪐</span></summary>
+                    <div class="sub-container">
+                        
+                        <details class="sub-block">
+                            <summary>United States</summary>
+                            <div class="photo-grid">
+                                <img src="2024-01-01.jpg" alt="US Photo"> 
+                            </div>
+                        </details>
+
+                        <details class="sub-block">
+                            <summary>Europe</summary>
+                            <div class="photo-grid"></div>
+                        </details>
+
+                        <details class="sub-block">
+                            <summary>Nepal</summary>
+                            <div class="photo-grid"></div>
+                        </details>
+                    </div>
+                </details>
+
+                <details class="capsule">
+                    <summary>Pets <span class="planet-icon">🪐</span></summary>
+                    <div class="sub-container">
+                        <details class="sub-block"><summary>DuoPIE</summary><div class="photo-grid"></div></details>
+                        <details class="sub-block"><summary>CHAI</summary><div class="photo-grid"></div></details>
+                        <details class="sub-block"><summary>NoNo</summary><div class="photo-grid"></div></details>
+                        <details class="sub-block"><summary>MiuMiu</summary><div class="photo-grid"></div></details>
+                    </div>
+                </details>
+
+                <details class="capsule">
+                    <summary>Artwork <span class="planet-icon">🪐</span></summary>
+                    <div class="sub-container">
+                        <details class="sub-block"><summary>Installation</summary><div class="photo-grid"></div></details>
+                        <details class="sub-block"><summary>Design</summary><div class="photo-grid"></div></details>
+                    </div>
+                </details>
+
+            </div> </div> <footer>
+            <p>人类的情绪需要更大的宇宙稀释</p>
+        </footer>
+
     </div>
 
     <div id="lightbox">
@@ -266,17 +356,15 @@
     </div>
 
     <script>
-        // 这里的代码负责让灯箱和切换功能动起来
+        /* 灯箱脚本 (保持和上次一样的逻辑) */
         const images = document.querySelectorAll('.photo-grid img');
         const lightbox = document.getElementById('lightbox');
         const lbImg = document.getElementById('lb-img');
         const closeBtn = document.getElementById('lb-close');
         const prevBtn = document.getElementById('lb-prev');
         const nextBtn = document.getElementById('lb-next');
-        
         let currentIndex = 0;
 
-        // 打开灯箱
         images.forEach((img, index) => {
             img.addEventListener('click', () => {
                 lightbox.style.display = 'flex';
@@ -285,32 +373,15 @@
             });
         });
 
-        // 关闭灯箱
-        closeBtn.addEventListener('click', () => {
-            lightbox.style.display = 'none';
-        });
+        closeBtn.addEventListener('click', () => lightbox.style.display = 'none');
+        lightbox.addEventListener('click', (e) => { if(e.target === lightbox) lightbox.style.display = 'none'; });
 
-        // 点击背景也可以关闭
-        lightbox.addEventListener('click', (e) => {
-            if(e.target === lightbox) lightbox.style.display = 'none';
-        });
-
-        // 下一张
-        function showNext() {
-            currentIndex = (currentIndex + 1) % images.length;
-            lbImg.src = images[currentIndex].src;
-        }
-
-        // 上一张
-        function showPrev() {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
-            lbImg.src = images[currentIndex].src;
-        }
+        function showNext() { currentIndex = (currentIndex + 1) % images.length; lbImg.src = images[currentIndex].src; }
+        function showPrev() { currentIndex = (currentIndex - 1 + images.length) % images.length; lbImg.src = images[currentIndex].src; }
 
         nextBtn.addEventListener('click', showNext);
         prevBtn.addEventListener('click', showPrev);
 
-        // 键盘控制
         document.addEventListener('keydown', (e) => {
             if(lightbox.style.display === 'flex') {
                 if(e.key === 'ArrowRight') showNext();
