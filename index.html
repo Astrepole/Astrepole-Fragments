@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>赫尔林之地|碎片</title>
+    <title>赫尔林之地 | 碎片</title>
     <style>
+        
         /* --- 基础设定 --- */
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif,'Boredom';
+            src: url('Boredom.otf') format('opentype');
             color: #eee;
             margin: 0;
             padding: 0;
@@ -29,6 +31,7 @@
 
         /* 页面主标题 */
         h1.main-title {
+            font-family: 'Boredom', sans-serif; /* 使用新字体 */
             text-align: center;
             font-weight: 200;
             letter-spacing: 10px;
@@ -63,7 +66,7 @@
         /* 左侧：时间维度 */
         .time-zone {
             flex: 1; /* 占据一半 */
-            padding-left: 40px; /* 左侧留空 40px */
+            padding-left: 80px; /* 左侧留空 80px */
             padding-right: 20px;
             border-right: 1px solid transparent; /* 占位符 */
             display: flex;
@@ -74,7 +77,7 @@
         /* 右侧：空间维度 */
         .space-zone {
             flex: 1; /* 占据一半 */
-            padding-right: 40px; /* 右侧留空 40px */
+            padding-right: 80px; /* 右侧留空 80px */
             padding-left: 20px;
             display: flex;
             flex-direction: column;
@@ -192,12 +195,13 @@
 
         /* --- 照片网格 --- */
         .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            display: flex;        /* 从 grid 改为 flex */
+            flex-wrap: wrap;      /* 允许自动换行 */
             gap: 8px;
             padding: 10px 0;
             margin-top: 5px;
         }
+        
 
         /* 右侧网格特殊处理：为了美观，尽量靠右显示 */
         .space-zone .photo-grid {
@@ -205,8 +209,8 @@
         }
 
         .photo-grid img {
-            width: 100%;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             object-fit: cover;
             border-radius: 4px;
             cursor: zoom-in;
@@ -238,6 +242,15 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
         footer { text-align: center; margin-top: 100px; font-size: 0.7em; color: #555; letter-spacing: 2px; padding-bottom: 20px;}
+        footer {
+            text-align: center;
+            margin-top: 100px;
+            font-size: 0.9em;
+            color: #ffffff; /* 改为纯白色 */
+            letter-spacing: 3px;
+            padding-bottom: 20px;
+            opacity: 0.7;   /* 建议加个透明度，不然在黑背景下可能太刺眼，看你喜好 */
+}
 
         /* --- 手机端适配 --- */
         /* 当屏幕很窄时，取消左右分栏，变成上下排列 */
@@ -258,7 +271,7 @@
 
     <div class="overlay">
         
-        <h1 class="main-title">FRAGMENT</h1>
+        <h1 class="main-title">Astrepole Fragment</h1>
 
         <div class="main-stage">
             
@@ -302,7 +315,7 @@
 
             </div> <div class="space-zone">
                 
-                <details class="capsule" open> <summary>Travel <span class="planet-icon">🪐</span></summary>
+                <details class="capsule" open> <summary>Travel <span class="planet-icon">🪩</span></summary>
                     <div class="sub-container">
                         
                         <details class="sub-block">
@@ -325,7 +338,7 @@
                 </details>
 
                 <details class="capsule">
-                    <summary>Pets <span class="planet-icon">🪐</span></summary>
+                    <summary>Pets <span class="planet-icon">🪩</span></summary>
                     <div class="sub-container">
                         <details class="sub-block"><summary>DuoPIE</summary><div class="photo-grid"></div></details>
                         <details class="sub-block"><summary>CHAI</summary><div class="photo-grid"></div></details>
@@ -335,7 +348,7 @@
                 </details>
 
                 <details class="capsule">
-                    <summary>Artwork <span class="planet-icon">🪐</span></summary>
+                    <summary>Artwork <span class="planet-icon">🪩</span></summary>
                     <div class="sub-container">
                         <details class="sub-block"><summary>Installation</summary><div class="photo-grid"></div></details>
                         <details class="sub-block"><summary>Design</summary><div class="photo-grid"></div></details>
